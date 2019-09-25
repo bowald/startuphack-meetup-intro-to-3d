@@ -1,4 +1,5 @@
 import * as BABYLON from 'babylonjs'
+import { Vector3 } from 'babylonjs';
 
 export class World {
     private scene: BABYLON.Scene
@@ -23,6 +24,7 @@ export class World {
                 // -- end
                 block.checkCollisions = true
                 block.position.set( x - Math.floor(width / 2), 0, z - Math.floor(depth / 2))
+                this._setupBlockActions(block)
             }
         }
     }
@@ -48,4 +50,47 @@ export class World {
         mesh.isVisible = false
         return mesh
     }
+
+    public _setupBlockActions(block: BABYLON.AbstractMesh) {
+        block.actionManager = new BABYLON.ActionManager(this.scene);
+        block.actionManager.registerAction(this._rightPickAction())
+        block.actionManager.registerAction(this._leftPickAction())
+    }
+
+    private _rightPickAction(): BABYLON.ExecuteCodeAction {
+      return new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnRightPickTrigger, e => {
+          const pickResult = this.scene.pick(e.pointerX, e.pointerY)
+          if (pickResult && pickResult.hit && pickResult.distance < 8 && pickResult.pickedMesh) {
+            const pickedNormal = pickResult.getNormal(true)
+              if (pickedNormal) {
+                  const newPosition = pickResult.pickedMesh.position.add(pickedNormal)
+                  if (this._isFree(newPosition)) {
+                      const block = this.dirtBlock.createInstance("")
+
+                      // without instances
+                      // const block = this.generateDirtBlock()
+                      // block.isVisible = true
+                      // -- end
+                      block.checkCollisions = true
+                      block.position = newPosition
+                      this._setupBlockActions(block)
+                  }
+              }
+          }
+        })
+    }
+
+    private _leftPickAction(): BABYLON.ExecuteCodeAction {
+        return new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnLeftPickTrigger, e => {
+            const pickResult = this.scene.pick(e.pointerX, e.pointerY)
+            if (pickResult && pickResult.hit && pickResult.distance < 8 && pickResult.pickedMesh) {
+                pickResult.pickedMesh.dispose()
+            }
+        })
+    }
+
+    private _isFree(position: BABYLON.Vector3): boolean {
+        return true
+    }
+
 }

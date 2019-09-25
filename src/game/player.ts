@@ -8,7 +8,7 @@ export class Player {
     constructor(scene: BABYLON.Scene) {
         this.scene = scene
         this.canvas = scene.getEngine().getRenderingCanvas()
-        this.camera = new BABYLON.UniversalCamera('player_camera', new BABYLON.Vector3(0,5,0), this.scene)
+        this.camera = new BABYLON.UniversalCamera('player_camera', new BABYLON.Vector3(0,2.5,0), this.scene)
         this.camera.attachControl(this.canvas, true)
         this.camera.minZ = 0.05
         this.camera.fov = Math.PI / (Math.PI + Math.E)
