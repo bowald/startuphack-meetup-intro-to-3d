@@ -1,5 +1,4 @@
 import * as BABYLON from 'babylonjs'
-import { Vector3 } from 'babylonjs';
 
 export class World {
     private scene: BABYLON.Scene
@@ -11,8 +10,10 @@ export class World {
     }
 
     public init(width: number, depth: number): void {
-      this.scene.gravity = new BABYLON.Vector3(0, -9.81, 0)
-      new BABYLON.HemisphericLight('light', new BABYLON.Vector3(1, 1, 0), this.scene)
+        this.scene.gravity = new BABYLON.Vector3(0, -9.81, 0)
+        new BABYLON.HemisphericLight('light', new BABYLON.Vector3(1, 1, 0), this.scene)
+
+        this._createSky()
 
         for (let x = 0; x < width; x++) {
             for (let z = 0; z < depth; z++) {
@@ -93,4 +94,18 @@ export class World {
         return true
     }
 
+    private _createSky() {
+        const skysphere = BABYLON.MeshBuilder.CreateSphere('skySphere', { segments: 16, diameter: 50 }, this.scene)
+        skysphere.isPickable = false
+        skysphere.position = BABYLON.Vector3.Zero()
+        skysphere.infiniteDistance = true
+
+        const skyboxmaterial = new BABYLON.StandardMaterial('skyBox', this.scene)
+        skyboxmaterial.backFaceCulling = false
+        skyboxmaterial.disableLighting = true
+        skyboxmaterial.emissiveTexture = new BABYLON.Texture('assets/MinecraftSkyDay.png', this.scene, true, false)
+        skyboxmaterial.emissiveTexture.coordinatesMode = BABYLON.Texture.SPHERICAL_MODE
+        skyboxmaterial.backFaceCulling = false
+        skysphere.material = skyboxmaterial
+    }
 }
