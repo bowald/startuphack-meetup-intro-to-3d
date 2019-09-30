@@ -1,6 +1,7 @@
 import * as BABYLON from 'babylonjs'
-import {Player} from './player'
-import {World} from './world'
+import { Player } from './player'
+import { World } from './world'
+import { Light } from './light'
 
 export class Game {
     private canvas: HTMLCanvasElement
@@ -8,6 +9,8 @@ export class Game {
     private scene: BABYLON.Scene
     private player: Player
     private world: World
+    private light: Light
+
 
     constructor(canvasElement: string) {
         this.canvas = <HTMLCanvasElement>document.getElementById(canvasElement)
@@ -15,13 +18,13 @@ export class Game {
         this.scene = new BABYLON.Scene(this.engine)
         this.player = new Player(this.scene)
         this.world = new World(this.scene)
+        this.light = new Light(this.scene)
     }
 
     public init(): void {
         this._setupEventListners()
-        this.scene.clearColor = new BABYLON.Color4(0.95, 0.95, 0.95, 1)
-        this.world.init(50, 50)
-        this.player.init()
+        this.scene.clearColor.set(0.1529411764705882, 0.1568627450980392, 0.1333333333333333, 1)
+        this.world.init()
     }
 
     public run(): void {
@@ -40,14 +43,5 @@ export class Game {
                 this.engine.enterFullscreen(true)
             }
         })
-
-        // window.addEventListener("click", e => {
-        //     // We try to pick an object
-        //     console.log(e.which)
-        //     const pickResult = this.scene.pick(this.scene.pointerX, this.scene.pointerY)
-        //     if (pickResult && pickResult.hit && pickResult.distance < 8 && pickResult.pickedMesh) {
-        //         pickResult.pickedMesh.dispose()
-        //     }
-        // })
     }
 }

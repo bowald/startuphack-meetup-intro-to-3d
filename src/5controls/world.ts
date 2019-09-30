@@ -17,8 +17,40 @@ export class World {
                 const block = this.dirtBlock.createInstance(`instance_${z + x * this.DEPTH}`)
                 block.position.set(x - Math.floor(this.WIDTH / 2), 0, z - Math.floor(this.DEPTH / 2))
                 block.checkCollisions = true
+                this.setupBlockActions(block)
             }
         }
+    }
+
+    public setupBlockActions(block: BABYLON.AbstractMesh) {
+        block.actionManager = new BABYLON.ActionManager(this.scene);
+        block.actionManager.registerAction(this.leftPickAction())
+        block.actionManager.registerAction(this.rightPickAction())
+    }
+
+    private leftPickAction(): BABYLON.ExecuteCodeAction {
+        return new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnLeftPickTrigger, e => {
+            const pickResult = this.scene.pick(e.pointerX, e.pointerY)
+            if (pickResult && pickResult.hit && pickResult.distance < 8 && pickResult.pickedMesh) {
+                pickResult.pickedMesh.dispose()
+            }
+        })
+    }
+
+    private rightPickAction(): BABYLON.ExecuteCodeAction {
+        return new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnRightPickTrigger, e => {
+            const pickResult = this.scene.pick(e.pointerX, e.pointerY)
+            if (pickResult && pickResult.hit && pickResult.distance < 8 && pickResult.pickedMesh) {
+                const pickedNormal = pickResult.getNormal(true)
+                if (pickedNormal) {
+                    const newPosition = pickResult.pickedMesh.position.add(pickedNormal)
+                    const block = this.dirtBlock.createInstance("")
+                    block.checkCollisions = true
+                    block.position = newPosition
+                    this.setupBlockActions(block)
+                }
+            }
+        })
     }
 
     private generateDirtBlock(): BABYLON.Mesh {

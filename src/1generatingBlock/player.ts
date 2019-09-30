@@ -13,6 +13,4 @@ export class Player {
         this.camera.position = new BABYLON.Vector3(3,1,2)
         this.camera.wheelPrecision = 20
     }
-
-    public init(): void {}
 }
