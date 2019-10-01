@@ -1,7 +1,7 @@
 {
   "name": "startupcraft",
   "version": "1.0.0",
-  "description": "",
+  "description": "Intended as an introduction to Babylonjs",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --config webpack.config.js",
