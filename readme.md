@@ -23,8 +23,11 @@ npm run start src/__subfolder__
 ```
 
 # More resourcces
-* [Babylon documentation](https://doc.babylonjs.com/api/)
-* [Babylon tutorials](https://doc.babylonjs.com/how_to/)
+* [BabylonJS documentation](https://doc.babylonjs.com/api/)
+* [BabylonJS tutorials](https://doc.babylonjs.com/how_to/)
 * [ThreeJS](https://threejs.org/), Another 3D framework
 * [SpectorJS](https://spector.babylonjs.com/), Good for debugging
 * [WebGL Tutorial](https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Tutorial/Getting_started_with_WebGL), Mozillas introduction to webGL
+
+# Disclaimer
+This project is for educational pourpose only.
