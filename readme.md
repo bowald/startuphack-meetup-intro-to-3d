@@ -23,6 +23,7 @@ npm run start src/__subfolder__
 ```
 
 # More resourcces
+* [Slides from presentation](assets/Hands-on_introduction_to_3D.pdf)
 * [BabylonJS documentation](https://doc.babylonjs.com/api/)
 * [BabylonJS tutorials](https://doc.babylonjs.com/how_to/)
 * [ThreeJS](https://threejs.org/), Another 3D framework
